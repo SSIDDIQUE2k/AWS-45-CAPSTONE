@@ -1,0 +1,274 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinanceAI — AI Agent & Financial Calculators</title>
+    <link rel="stylesheet" href="{% static 'landing/landing.css' %}" />
+    <style>
+      .input{width:100%;background:#111317;border:1px solid var(--border);color:var(--foreground);padding:.6rem .75rem;border-radius:.375rem}
+      .input:focus{outline:2px solid transparent;box-shadow:0 0 0 3px rgba(59,130,246,.5)}
+      .label{display:block;margin-bottom:.25rem;color:#c7c7d0;font-size:.9rem}
+      .muted{color:#a1a1aa}
+      .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+      .divider{height:1px;background:var(--border);margin:1rem 0}
+      .pill{display:inline-flex;align-items:center;border:1px solid var(--border);padding:.25rem .5rem;border-radius:9999px;font-size:.75rem;color:#a1a1aa}
+      .msg{white-space:pre-wrap}
+      .scroll{max-height:360px;overflow:auto}
+      .card h3{margin:0 0 .5rem 0}
+      table{width:100%;border-collapse:collapse}
+      th,td{border-bottom:1px solid var(--border);padding:.5rem;text-align:right}
+      th:first-child,td:first-child{text-align:left}
+    </style>
+  </head>
+  <body class="min-h-screen bg-background text-foreground">
+    <form style="display:none">{% csrf_token %}</form>
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <header class="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+          <a class="flex items-center space-x-2" href="/">
+            <div class="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+              <svg class="icon h-5 w-5 text-primary-foreground" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="10" width="4" height="10" fill="currentColor"/>
+                <rect x="10" y="6" width="4" height="14" fill="currentColor"/>
+                <rect x="17" y="13" width="4" height="7" fill="currentColor"/>
+              </svg>
+            </div>
+            <span class="text-xl font-bold">FinanceAI</span>
+          </a>
+          <nav class="hidden md:flex items-center space-x-8">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/tools/" class="px-3 py-1.5 rounded bg-primary text-primary-foreground">AI Tools</a>
+            <a href="/chat/" class="px-3 py-1.5 rounded border hover:border-foreground transition">Open Chat</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main" class="py-20 lg:py-32">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+          <h1 class="text-4xl sm:text-5xl font-bold leading-tight mb-4">AI Agent & Financial Calculators</h1>
+          <p class="text-xl text-muted-foreground">Ask questions and run quick calculations — amortization, APR→APY, and DTI.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- AI Agent -->
+          <section class="card md:col-span-2">
+            <h3 class="text-2xl font-semibold mb-2">AI Agent</h3>
+            <p class="muted mb-4">Powered by your knowledge base. For sensitive decisions, consult a licensed advisor.</p>
+            <div class="flex items-center gap-4 mb-4">
+              <div style="flex:1">
+                <label class="label" for="session-title">Session name</label>
+                <input id="session-title" class="input" type="text" placeholder="e.g., Mortgage scenarios" />
+              </div>
+              <div class="flex items-center gap-4" style="align-self:flex-end;padding-bottom:.25rem">
+                <button id="new-session" class="btn btn-outline" type="button">New Session</button>
+                <button id="save-title" class="btn btn-outline" type="button">Save Name</button>
+                <button id="load-history" class="btn btn-outline" type="button">Load History</button>
+              </div>
+            </div>
+            <div class="muted mb-4" id="session-pill"></div>
+            <div class="mb-4">
+              <label class="label" for="agent-input">Your question</label>
+              <textarea id="agent-input" class="input" rows="3" placeholder="e.g., What's the impact on monthly payment if APR drops from 7% to 6.5% on a $400k, 30-year mortgage?"></textarea>
+            </div>
+            <div class="flex items-center space-x-2 mb-4">
+              <button id="send-btn" class="btn btn-primary">Ask Agent</button>
+              <button id="clear-btn" class="btn btn-outline">Clear</button>
+              <span id="status" class="pill" style="display:none">Thinking…</span>
+            </div>
+            <div id="agent-output" class="scroll" aria-live="polite"></div>
+          </section>
+
+          <!-- Calculators -->
+          <aside class="flex flex-col gap-8">
+            <!-- Amortization -->
+            <div class="card">
+              <h3 class="text-xl font-semibold">Loan Amortization</h3>
+              <div class="divider"></div>
+              <label class="label" for="am-principal">Principal ($)</label>
+              <input id="am-principal" class="input" type="number" min="0" step="1000" value="300000" />
+              <label class="label" for="am-rate" style="margin-top:.75rem">APR (%)</label>
+              <input id="am-rate" class="input" type="number" min="0" step="0.01" value="6.5" />
+              <label class="label" for="am-years" style="margin-top:.75rem">Term (years)</label>
+              <input id="am-years" class="input" type="number" min="1" step="1" value="30" />
+              <div class="flex items-center space-x-2" style="margin-top:1rem">
+                <button id="am-calc" class="btn btn-outline">Calculate</button>
+                <button id="am-download" class="btn btn-outline">Download CSV</button>
+              </div>
+              <div id="am-result" class="muted" style="margin-top:1rem"></div>
+              <div id="am-table" class="scroll" style="margin-top:1rem"></div>
+            </div>
+
+            <!-- APR to APY -->
+            <div class="card">
+              <h3 class="text-xl font-semibold">APR → APY</h3>
+              <div class="divider"></div>
+              <label class="label" for="apy-apr">APR (%)</label>
+              <input id="apy-apr" class="input" type="number" min="0" step="0.01" value="19.9" />
+              <label class="label" for="apy-n" style="margin-top:.75rem">Compounds / year</label>
+              <input id="apy-n" class="input" type="number" min="1" step="1" value="12" />
+              <div class="flex items-center" style="margin-top:1rem">
+                <button id="apy-calc" class="btn btn-outline">Calculate</button>
+              </div>
+              <div id="apy-result" class="muted" style="margin-top:1rem"></div>
+            </div>
+
+            <!-- DTI -->
+            <div class="card">
+              <h3 class="text-xl font-semibold">Debt-to-Income (DTI)</h3>
+              <div class="divider"></div>
+              <label class="label" for="dti-debt">Monthly debt ($)</label>
+              <input id="dti-debt" class="input" type="number" min="0" step="1" value="1500" />
+              <label class="label" for="dti-income" style="margin-top:.75rem">Gross monthly income ($)</label>
+              <input id="dti-income" class="input" type="number" min="0" step="1" value="6000" />
+              <div class="flex items-center" style="margin-top:1rem">
+                <button id="dti-calc" class="btn btn-outline">Calculate</button>
+              </div>
+              <div id="dti-result" class="muted" style="margin-top:1rem"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-12 border-t border-border">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center muted">
+        <span class="pill">Educational use only</span>
+      </div>
+    </footer>
+
+    <script>
+      function getCookie(name){const m=document.cookie.match('(^|;)\\s*'+name+'\\s*=\\s*([^;]+)');return m?m.pop():''}
+      const csrftoken=getCookie('csrftoken');
+
+      // AI Agent interaction
+      const sendBtn=document.getElementById('send-btn');
+      const clearBtn=document.getElementById('clear-btn');
+      const inputEl=document.getElementById('agent-input');
+      const outEl=document.getElementById('agent-output');
+      const statusEl=document.getElementById('status');
+      let sessionId=null;
+      const sessionTitle=document.getElementById('session-title');
+      const sessionPill=document.getElementById('session-pill');
+
+      function appendMessage(role, text){
+        const wrap=document.createElement('div');
+        wrap.className='mb-6';
+        const who=document.createElement('div');
+        who.className='pill mb-4';
+        who.textContent=role==='user'?'You':'Assistant';
+        const msg=document.createElement('div');
+        msg.className='msg';
+        msg.textContent=text;
+        wrap.appendChild(who);wrap.appendChild(msg);outEl.prepend(wrap);
+      }
+
+      async function askAgent(){
+        const text=inputEl.value.trim();
+        if(!text) return;
+        appendMessage('user', text);
+        inputEl.value='';
+        statusEl.style.display='inline-flex';
+        try{
+          const res=await fetch('/api/chat/',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRFToken':csrftoken},body:JSON.stringify({message:text,session_id:sessionId})});
+          const data=await res.json();
+          sessionId=data.session_id||sessionId;
+          updateSessionPill();
+          appendMessage('assistant', data.answer || '');
+        }catch(e){
+          appendMessage('assistant','Sorry, something went wrong.');
+        }finally{
+          statusEl.style.display='none';
+        }
+      }
+
+      sendBtn.addEventListener('click', askAgent);
+      inputEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && (e.metaKey||e.ctrlKey)){ askAgent(); }});
+      clearBtn.addEventListener('click', ()=>{ outEl.innerHTML=''; sessionId=null; updateSessionPill(); });
+
+      function updateSessionPill(){
+        sessionPill.innerHTML = sessionId ? `<span class=\"pill\">Session #${sessionId} ${sessionTitle.value? '— '+sessionTitle.value: ''}</span>` : '';
+      }
+
+      document.getElementById('new-session').addEventListener('click', async()=>{
+        const title=(sessionTitle.value||'').trim();
+        const res=await fetch('/api/sessions/',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRFToken':csrftoken},body:JSON.stringify({title})});
+        const data=await res.json();
+        sessionId=data.id; sessionTitle.value=data.title||''; updateSessionPill();
+      });
+
+      document.getElementById('save-title').addEventListener('click', async()=>{
+        if(!sessionId){return}
+        const title=(sessionTitle.value||'').trim();
+        await fetch(`/api/sessions/${sessionId}/`,{method:'PATCH',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRFToken':csrftoken},body:JSON.stringify({title})});
+        updateSessionPill();
+      });
+
+      document.getElementById('load-history').addEventListener('click', async()=>{
+        if(!sessionId){return}
+        const res=await fetch(`/api/sessions/${sessionId}/`,{credentials:'same-origin'});
+        const data=await res.json();
+        outEl.innerHTML='';
+        (data.messages||[]).forEach(m=>appendMessage(m.role,m.content));
+        if(data.title){ sessionTitle.value=data.title; }
+        updateSessionPill();
+      });
+
+      // Amortization calculator (server-backed)
+      async function renderAmort(){
+        const P=parseFloat(document.getElementById('am-principal').value||'0');
+        const aprPct=parseFloat(document.getElementById('am-rate').value||'0');
+        const yrs=parseInt(document.getElementById('am-years').value||'0');
+        if(P<=0||aprPct<0||yrs<=0){return}
+        const res=await fetch('/api/tools/amortization/',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRFToken':csrftoken},body:JSON.stringify({principal:P,apr_percent:aprPct,years:yrs,session_id:sessionId})});
+        const data=await res.json();
+        const fmt = (x)=>'$'+Number(x).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+        document.getElementById('am-result').innerHTML = `Monthly payment: <strong>${fmt(data.monthly_payment)}</strong><br>Total paid: ${fmt(data.total_paid)} • Total interest: ${fmt(data.total_interest)}`;
+        const sched = data.schedule||[];
+        const preview = [...sched.slice(0,24), ...(sched.length? [sched[sched.length-1]]:[])];
+        const rows=preview.map(r=>`<tr><td>${r.month}</td><td>${fmt(data.monthly_payment)}</td><td>${fmt(r.interest)}</td><td>${fmt(r.principal)}</td><td>${fmt(r.balance)}</td></tr>`).join('');
+        document.getElementById('am-table').innerHTML = `<div class=\"muted mb-4\">Showing first 24 months and final payment.</div><table><thead><tr><th>#</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Balance</th></tr></thead><tbody>${rows}</tbody></table>`;
+      }
+      document.getElementById('am-calc').addEventListener('click', renderAmort);
+      document.getElementById('am-download').addEventListener('click', ()=>{
+        const P=parseFloat(document.getElementById('am-principal').value||'0');
+        const apr=parseFloat(document.getElementById('am-rate').value||'0');
+        const yrs=parseInt(document.getElementById('am-years').value||'0');
+        const r=apr/100/12; const n=yrs*12;
+        const payment = r===0 ? P/n : (P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+        let balance=P; let csv='pmt,payment,interest,principal,balance\n';
+        for(let i=1;i<=n;i++){
+          const interest=balance*r; const principalPaid=payment-interest; balance=Math.max(0,balance-principalPaid);
+          csv+=`${i},${payment.toFixed(2)},${interest.toFixed(2)},${principalPaid.toFixed(2)},${balance.toFixed(2)}\n`;
+        }
+        const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download='amortization.csv'; a.click(); URL.revokeObjectURL(url);
+      });
+
+      // APR -> APY calculator (server-backed)
+      document.getElementById('apy-calc').addEventListener('click', async()=>{
+        const aprPct=parseFloat(document.getElementById('apy-apr').value||'0');
+        const n=parseInt(document.getElementById('apy-n').value||'1');
+        const res=await fetch('/api/tools/apy/',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRFToken':csrftoken},body:JSON.stringify({apr_percent:aprPct,periods:n,session_id:sessionId})});
+        const data=await res.json();
+        document.getElementById('apy-result').textContent = `APY: ${(Number(data.apy)*100).toFixed(3)}%`;
+      });
+
+      // DTI calculator (server-backed)
+      document.getElementById('dti-calc').addEventListener('click', async()=>{
+        const debt=parseFloat(document.getElementById('dti-debt').value||'0');
+        const income=parseFloat(document.getElementById('dti-income').value||'0');
+        if(income<=0){document.getElementById('dti-result').textContent='Income must be > 0';return}
+        const res=await fetch('/api/tools/dti/',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','X-CSRFToken':csrftoken},body:JSON.stringify({debt:debt,income:income,session_id:sessionId})});
+        const data=await res.json();
+        const dti=Number(data.dti||0); let label='Severe';
+        if(dti<0.2) label='Excellent'; else if(dti<0.36) label='Good'; else if(dti<0.43) label='Acceptable'; else if(dti<0.5) label='High';
+        document.getElementById('dti-result').textContent = `DTI: ${(dti*100).toFixed(2)}% — ${label}`;
+      });
+    </script>
+  </body>
+  </html>

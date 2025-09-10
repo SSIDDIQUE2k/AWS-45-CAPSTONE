@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Goals - FinGuide</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --error-color: #dc2626;
+            --background: #ffffff;
+            --card-background: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--success-color) 0%, #047857 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .goals-section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-description {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .goal-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--success-color);
+        }
+
+        .goal-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .goal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        .goal-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .goal-features {
+            list-style: none;
+        }
+
+        .goal-features li {
+            padding: 0.5rem 0;
+            color: var(--text-primary);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .goal-features li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .goal-tracker {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--success-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .calculate-btn {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .calculate-btn:hover {
+            background: #047857;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 20px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--success-color), #34d399);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f0fdf4;
+            border: 1px solid var(--success-color);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result-item {
+            text-align: center;
+        }
+
+        .result-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .result-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        .tips {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .tips h3 {
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        .tips ul {
+            list-style: none;
+        }
+
+        .tips li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .tips li:before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+
+        .navigation {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-link {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin: 0 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: #047857;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .goals-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Financial Goals</h1>
+            <p>Plan, track, and achieve your financial dreams</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="goals-section">
+            <h2 class="section-title">Popular Financial Goals</h2>
+            <p class="section-description">Choose from these common financial objectives and start planning your path to success.</p>
+            
+            <div class="goals-grid">
+                <div class="goal-card">
+                    <div class="goal-icon">🏠</div>
+                    <h3 class="goal-title">Home Down Payment</h3>
+                    <p class="goal-description">Save for your dream home with a strategic down payment plan.</p>
+                    <ul class="goal-features">
+                        <li>Typically 10-20% of home value</li>
+                        <li>Lower monthly payments</li>
+                        <li>Avoid PMI with 20% down</li>
+                        <li>Better loan terms</li>
+                    </ul>
+                </div>
+
+                <div class="goal-card">
+                    <div class="goal-icon">🚗</div>
+                    <h3 class="goal-title">Car Purchase</h3>
+                    <p class="goal-description">Plan for a reliable vehicle without breaking your budget.</p>
+                    <ul class="goal-features">
+                        <li>Cash purchase vs financing</li>
+                        <li>New vs used considerations</li>
+                        <li>Insurance and maintenance costs</li>
+                        <li>Depreciation planning</li>
+                    </ul>
+                </div>
+
+                <div class="goal-card">
+                    <div class="goal-icon">🎓</div>
+                    <h3 class="goal-title">Education Fund</h3>
+                    <p class="goal-description">Invest in education for yourself or your children's future.</p>
+                    <ul class="goal-features">
+                        <li>529 college savings plans</li>
+                        <li>Tax advantages</li>
+                        <li>Professional development</li>
+                        <li>Certification programs</li>
+                    </ul>
+                </div>
+
+                <div class="goal-card">
+                    <div class="goal-icon">🏖️</div>
+                    <h3 class="goal-title">Vacation</h3>
+                    <p class="goal-description">Plan and save for memorable travel experiences.</p>
+                    <ul class="goal-features">
+                        <li>Destination budgeting</li>
+                        <li>Travel rewards optimization</li>
+                        <li>Seasonal price planning</li>
+                        <li>Emergency travel fund</li>
+                    </ul>
+                </div>
+
+                <div class="goal-card">
+                    <div class="goal-icon">💼</div>
+                    <h3 class="goal-title">Business Startup</h3>
+                    <p class="goal-description">Build capital for your entrepreneurial ventures.</p>
+                    <ul class="goal-features">
+                        <li>Initial capital requirements</li>
+                        <li>Operating expenses buffer</li>
+                        <li>Equipment and inventory</li>
+                        <li>Marketing and legal costs</li>
+                    </ul>
+                </div>
+
+                <div class="goal-card">
+                    <div class="goal-icon">🏖️</div>
+                    <h3 class="goal-title">Early Retirement</h3>
+                    <p class="goal-description">Achieve financial independence and retire on your terms.</p>
+                    <ul class="goal-features">
+                        <li>FIRE movement strategies</li>
+                        <li>25x annual expenses rule</li>
+                        <li>Tax-advantaged accounts</li>
+                        <li>Passive income streams</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="goal-tracker">
+                <h3 style="color: var(--success-color); margin-bottom: 1.5rem;">Goal Calculator</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="goal-name">Goal Name</label>
+                        <input type="text" id="goal-name" class="form-input" placeholder="Dream Home Down Payment">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="target-amount">Target Amount ($)</label>
+                        <input type="number" id="target-amount" class="form-input" placeholder="50000">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="current-savings">Current Savings ($)</label>
+                        <input type="number" id="current-savings" class="form-input" placeholder="10000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="monthly-savings">Monthly Savings ($)</label>
+                        <input type="number" id="monthly-savings" class="form-input" placeholder="800">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="time-frame">Target Date</label>
+                        <input type="month" id="time-frame" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="interest-rate">Expected Return (%)</label>
+                        <input type="number" id="interest-rate" class="form-input" placeholder="5" step="0.1">
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateGoal()">Calculate Goal Plan</button>
+
+                <div id="goal-result" class="result">
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <strong id="goal-status" style="font-size: 1.25rem;"></strong>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <span id="progress-text">0% Complete</span>
+                    </div>
+
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="result-label">Amount Needed</div>
+                            <div class="result-value" id="amount-needed">$0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Months to Goal</div>
+                            <div class="result-value" id="months-to-goal">0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Total with Interest</div>
+                            <div class="result-value" id="total-with-interest">$0</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Interest Earned</div>
+                            <div class="result-value" id="interest-earned">$0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tips">
+                <h3>Goal Achievement Tips</h3>
+                <ul>
+                    <li>Set SMART goals (Specific, Measurable, Achievable, Relevant, Time-bound)</li>
+                    <li>Automate your savings to stay consistent</li>
+                    <li>Break large goals into smaller milestones</li>
+                    <li>Track progress monthly and adjust as needed</li>
+                    <li>Consider high-yield savings accounts for better returns</li>
+                    <li>Review and update goals annually</li>
+                    <li>Celebrate milestones to stay motivated</li>
+                    <li>Have a backup plan for unexpected expenses</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/calculators/" class="nav-link">🧮 Calculators</a>
+            <a href="/chat/" class="nav-link">💬 AI Chat</a>
+            <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
+            <a href="/" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Set default target date to 2 years from now
+        document.addEventListener('DOMContentLoaded', function() {
+            const targetDate = new Date();
+            targetDate.setFullYear(targetDate.getFullYear() + 2);
+            const formattedDate = targetDate.toISOString().slice(0, 7);
+            document.getElementById('time-frame').value = formattedDate;
+        });
+
+        function calculateGoal() {
+            const goalName = document.getElementById('goal-name').value || 'Your Goal';
+            const targetAmount = parseFloat(document.getElementById('target-amount').value);
+            const currentSavings = parseFloat(document.getElementById('current-savings').value) || 0;
+            const monthlySavings = parseFloat(document.getElementById('monthly-savings').value) || 0;
+            const targetDateStr = document.getElementById('time-frame').value;
+            const annualRate = parseFloat(document.getElementById('interest-rate').value) / 100 || 0;
+
+            if (!targetAmount || !targetDateStr) {
+                alert('Please enter target amount and target date');
+                return;
+            }
+
+            const targetDate = new Date(targetDateStr + '-01');
+            const currentDate = new Date();
+            const monthsToTarget = Math.ceil((targetDate - currentDate) / (1000 * 60 * 60 * 24 * 30.44));
+
+            if (monthsToTarget <= 0) {
+                alert('Please select a future target date');
+                return;
+            }
+
+            const monthlyRate = annualRate / 12;
+            
+            // Calculate future value of current savings
+            const futureValueCurrent = currentSavings * Math.pow(1 + monthlyRate, monthsToTarget);
+            
+            // Calculate future value of monthly contributions (annuity)
+            let futureValueContributions = 0;
+            if (monthlySavings > 0 && monthlyRate > 0) {
+                futureValueContributions = monthlySavings * ((Math.pow(1 + monthlyRate, monthsToTarget) - 1) / monthlyRate);
+            } else if (monthlySavings > 0) {
+                futureValueContributions = monthlySavings * monthsToTarget;
+            }
+
+            const totalFutureValue = futureValueCurrent + futureValueContributions;
+            const amountNeeded = Math.max(0, targetAmount - totalFutureValue);
+            const progressPercentage = Math.min(100, (totalFutureValue / targetAmount) * 100);
+            
+            const totalContributed = currentSavings + (monthlySavings * monthsToTarget);
+            const interestEarned = totalFutureValue - totalContributed;
+
+            // Update display
+            const statusEl = document.getElementById('goal-status');
+            if (totalFutureValue >= targetAmount) {
+                statusEl.textContent = `🎉 You'll reach your ${goalName} goal!`;
+                statusEl.style.color = 'var(--success-color)';
+            } else {
+                statusEl.textContent = `📈 ${goalName} Progress`;
+                statusEl.style.color = 'var(--warning-color)';
+            }
+
+            document.getElementById('progress-fill').style.width = progressPercentage + '%';
+            document.getElementById('progress-text').textContent = progressPercentage.toFixed(1) + '% Complete';
+            
+            document.getElementById('amount-needed').textContent = '$' + amountNeeded.toFixed(0);
+            document.getElementById('months-to-goal').textContent = monthsToTarget;
+            document.getElementById('total-with-interest').textContent = '$' + totalFutureValue.toFixed(0);
+            document.getElementById('interest-earned').textContent = '$' + interestEarned.toFixed(0);
+            
+            document.getElementById('goal-result').classList.add('show');
+        }
+    </script>
+</body>
+</html>

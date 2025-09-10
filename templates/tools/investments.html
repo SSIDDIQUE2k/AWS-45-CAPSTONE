@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Tools - FinGuide</title>
+    <style>
+        :root {
+            --primary-color: #10b981;
+            --primary-dark: #059669;
+            --secondary-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --error-color: #dc2626;
+            --background: #ffffff;
+            --card-background: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .investments-section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-description {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .investments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .investment-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .investment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .investment-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .investment-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .calculate-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .calculate-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f0fdfa;
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .result-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .investment-types {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .type-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .type-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .type-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .type-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .type-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .risk-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+        }
+
+        .risk-low { background: #dcfce7; color: #166534; }
+        .risk-medium { background: #fef3c7; color: #92400e; }
+        .risk-high { background: #fee2e2; color: #991b1b; }
+
+        .navigation {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin: 0 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .investments-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .types-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Investment Tools</h1>
+            <p>Plan your investment strategy and grow your wealth</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="investments-section">
+            <h2 class="section-title">Investment Calculators</h2>
+            <p class="section-description">Use these tools to plan your investment strategy and understand potential returns.</p>
+            
+            <div class="investments-grid">
+                <!-- Portfolio Analyzer -->
+                <div class="investment-card">
+                    <h3 class="investment-title">📊 Portfolio Growth Calculator</h3>
+                    <p class="investment-description">Calculate how your investment portfolio could grow over time with regular contributions.</p>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="initial-investment">Initial Investment ($)</label>
+                            <input type="number" id="initial-investment" class="form-input" placeholder="10000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="monthly-contribution">Monthly Contribution ($)</label>
+                            <input type="number" id="monthly-contribution" class="form-input" placeholder="500">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="annual-return">Expected Annual Return (%)</label>
+                            <input type="number" id="annual-return" class="form-input" placeholder="7" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="investment-years">Investment Period (years)</label>
+                            <input type="number" id="investment-years" class="form-input" placeholder="20">
+                        </div>
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calculatePortfolioGrowth()">Calculate Growth</button>
+                    
+                    <div id="portfolio-result" class="result">
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <div class="result-title">Final Value</div>
+                                <div class="result-value" id="final-value">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Total Contributed</div>
+                                <div class="result-value" id="total-contributed">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Investment Gains</div>
+                                <div class="result-value" id="investment-gains">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Return Multiple</div>
+                                <div class="result-value" id="return-multiple">0x</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Retirement Calculator -->
+                <div class="investment-card">
+                    <h3 class="investment-title">🏖️ Retirement Calculator</h3>
+                    <p class="investment-description">Determine how much you need to save for retirement using the 4% rule.</p>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="current-age">Current Age</label>
+                        <input type="number" id="current-age" class="form-input" placeholder="30">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="retirement-age">Retirement Age</label>
+                        <input type="number" id="retirement-age" class="form-input" placeholder="65">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="annual-expenses">Desired Annual Retirement Income ($)</label>
+                        <input type="number" id="annual-expenses" class="form-input" placeholder="60000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="current-savings">Current Retirement Savings ($)</label>
+                        <input type="number" id="current-savings" class="form-input" placeholder="50000">
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calculateRetirement()">Calculate Retirement</button>
+                    
+                    <div id="retirement-result" class="result">
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <div class="result-title">Target Amount Needed</div>
+                                <div class="result-value" id="target-amount">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Monthly Savings Needed</div>
+                                <div class="result-value" id="monthly-savings-needed">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Years to Retirement</div>
+                                <div class="result-value" id="years-to-retirement">0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">On Track?</div>
+                                <div class="result-value" id="on-track-status">Calculate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dollar Cost Averaging -->
+                <div class="investment-card">
+                    <h3 class="investment-title">📈 Dollar Cost Averaging</h3>
+                    <p class="investment-description">See how regular investing can smooth out market volatility over time.</p>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="dca-amount">Monthly Investment ($)</label>
+                            <input type="number" id="dca-amount" class="form-input" placeholder="1000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="dca-years">Investment Period (years)</label>
+                            <input type="number" id="dca-years" class="form-input" placeholder="10">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="avg-return">Average Annual Return (%)</label>
+                            <input type="number" id="avg-return" class="form-input" placeholder="8" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="volatility">Volatility (%)</label>
+                            <input type="number" id="volatility" class="form-input" placeholder="15" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calculateDCA()">Calculate DCA</button>
+                    
+                    <div id="dca-result" class="result">
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <div class="result-title">Total Invested</div>
+                                <div class="result-value" id="dca-invested">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Expected Value</div>
+                                <div class="result-value" id="dca-value">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Expected Gain</div>
+                                <div class="result-value" id="dca-gain">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Annualized Return</div>
+                                <div class="result-value" id="dca-return">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FIRE Calculator -->
+                <div class="investment-card">
+                    <h3 class="investment-title">🔥 FIRE Calculator</h3>
+                    <p class="investment-description">Calculate when you can achieve Financial Independence, Retire Early (FIRE).</p>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="annual-income">Annual Income ($)</label>
+                            <input type="number" id="annual-income" class="form-input" placeholder="80000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="annual-spending">Annual Spending ($)</label>
+                            <input type="number" id="annual-spending" class="form-input" placeholder="50000">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="current-net-worth">Current Net Worth ($)</label>
+                            <input type="number" id="current-net-worth" class="form-input" placeholder="100000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="fire-return">Expected Return (%)</label>
+                            <input type="number" id="fire-return" class="form-input" placeholder="7" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <button class="calculate-btn" onclick="calculateFIRE()">Calculate FIRE</button>
+                    
+                    <div id="fire-result" class="result">
+                        <div class="result-grid">
+                            <div class="result-item">
+                                <div class="result-title">FIRE Number</div>
+                                <div class="result-value" id="fire-number">$0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Years to FIRE</div>
+                                <div class="result-value" id="years-to-fire">0</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Savings Rate</div>
+                                <div class="result-value" id="savings-rate">0%</div>
+                            </div>
+                            <div class="result-item">
+                                <div class="result-title">Monthly Savings</div>
+                                <div class="result-value" id="monthly-fire-savings">$0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="investment-types">
+                <h2 class="section-title">Investment Types Guide</h2>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <div class="type-icon">📈</div>
+                        <h4 class="type-title">Index Funds</h4>
+                        <p class="type-description">Diversified funds that track market indexes. Low cost, broad exposure.</p>
+                        <span class="risk-indicator risk-medium">Medium Risk</span>
+                    </div>
+                    
+                    <div class="type-card">
+                        <div class="type-icon">💰</div>
+                        <h4 class="type-title">Bonds</h4>
+                        <p class="type-description">Fixed-income securities providing steady returns and capital preservation.</p>
+                        <span class="risk-indicator risk-low">Low Risk</span>
+                    </div>
+                    
+                    <div class="type-card">
+                        <div class="type-icon">🏢</div>
+                        <h4 class="type-title">Individual Stocks</h4>
+                        <p class="type-description">Direct ownership in companies. Higher potential returns but more volatile.</p>
+                        <span class="risk-indicator risk-high">High Risk</span>
+                    </div>
+                    
+                    <div class="type-card">
+                        <div class="type-icon">🏠</div>
+                        <h4 class="type-title">REITs</h4>
+                        <p class="type-description">Real Estate Investment Trusts. Exposure to real estate without direct ownership.</p>
+                        <span class="risk-indicator risk-medium">Medium Risk</span>
+                    </div>
+                    
+                    <div class="type-card">
+                        <div class="type-icon">🌍</div>
+                        <h4 class="type-title">International Funds</h4>
+                        <p class="type-description">Diversify globally with exposure to international markets and currencies.</p>
+                        <span class="risk-indicator risk-medium">Medium Risk</span>
+                    </div>
+                    
+                    <div class="type-card">
+                        <div class="type-icon">🚀</div>
+                        <h4 class="type-title">Growth Stocks</h4>
+                        <p class="type-description">Companies with high growth potential. Higher risk, higher potential reward.</p>
+                        <span class="risk-indicator risk-high">High Risk</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/calculators/" class="nav-link">🧮 Calculators</a>
+            <a href="/goals/" class="nav-link">🎯 Goals</a>
+            <a href="/budget/" class="nav-link">💰 Budget</a>
+            <a href="/chat/" class="nav-link">💬 AI Chat</a>
+            <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
+            <a href="/" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+
+    <script>
+        function calculatePortfolioGrowth() {
+            const initial = parseFloat(document.getElementById('initial-investment').value) || 0;
+            const monthly = parseFloat(document.getElementById('monthly-contribution').value) || 0;
+            const rate = parseFloat(document.getElementById('annual-return').value) / 100 || 0;
+            const years = parseFloat(document.getElementById('investment-years').value) || 0;
+            
+            if (!rate || !years) {
+                alert('Please fill in the return rate and investment period');
+                return;
+            }
+            
+            const monthlyRate = rate / 12;
+            const months = years * 12;
+            
+            // Future value of initial investment
+            const futureValueInitial = initial * Math.pow(1 + monthlyRate, months);
+            
+            // Future value of monthly contributions
+            const futureValueContributions = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+            
+            const finalValue = futureValueInitial + futureValueContributions;
+            const totalContributed = initial + (monthly * months);
+            const gains = finalValue - totalContributed;
+            const multiple = totalContributed > 0 ? finalValue / totalContributed : 0;
+            
+            document.getElementById('final-value').textContent = '$' + finalValue.toFixed(0);
+            document.getElementById('total-contributed').textContent = '$' + totalContributed.toFixed(0);
+            document.getElementById('investment-gains').textContent = '$' + gains.toFixed(0);
+            document.getElementById('return-multiple').textContent = multiple.toFixed(1) + 'x';
+            
+            document.getElementById('portfolio-result').classList.add('show');
+        }
+
+        function calculateRetirement() {
+            const currentAge = parseFloat(document.getElementById('current-age').value);
+            const retirementAge = parseFloat(document.getElementById('retirement-age').value);
+            const annualExpenses = parseFloat(document.getElementById('annual-expenses').value);
+            const currentSavings = parseFloat(document.getElementById('current-savings').value) || 0;
+            
+            if (!currentAge || !retirementAge || !annualExpenses) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const yearsToRetirement = retirementAge - currentAge;
+            const targetAmount = annualExpenses * 25; // 4% rule
+            const monthlyRate = 0.07 / 12; // Assume 7% annual return
+            const months = yearsToRetirement * 12;
+            
+            // Future value of current savings
+            const futureCurrentSavings = currentSavings * Math.pow(1 + monthlyRate, months);
+            
+            // Additional amount needed
+            const additionalNeeded = Math.max(0, targetAmount - futureCurrentSavings);
+            
+            // Monthly savings needed
+            const monthlySavingsNeeded = additionalNeeded / ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+            
+            document.getElementById('target-amount').textContent = '$' + targetAmount.toFixed(0);
+            document.getElementById('monthly-savings-needed').textContent = '$' + monthlySavingsNeeded.toFixed(0);
+            document.getElementById('years-to-retirement').textContent = yearsToRetirement;
+            
+            const onTrack = futureCurrentSavings >= targetAmount ? 'Yes! 🎉' : 'Need more savings';
+            document.getElementById('on-track-status').textContent = onTrack;
+            
+            document.getElementById('retirement-result').classList.add('show');
+        }
+
+        function calculateDCA() {
+            const monthlyAmount = parseFloat(document.getElementById('dca-amount').value);
+            const years = parseFloat(document.getElementById('dca-years').value);
+            const avgReturn = parseFloat(document.getElementById('avg-return').value) / 100;
+            
+            if (!monthlyAmount || !years || !avgReturn) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const months = years * 12;
+            const totalInvested = monthlyAmount * months;
+            const monthlyRate = avgReturn / 12;
+            
+            // Future value of annuity
+            const expectedValue = monthlyAmount * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+            const expectedGain = expectedValue - totalInvested;
+            const annualizedReturn = ((expectedValue / totalInvested) ** (1/years) - 1) * 100;
+            
+            document.getElementById('dca-invested').textContent = '$' + totalInvested.toFixed(0);
+            document.getElementById('dca-value').textContent = '$' + expectedValue.toFixed(0);
+            document.getElementById('dca-gain').textContent = '$' + expectedGain.toFixed(0);
+            document.getElementById('dca-return').textContent = annualizedReturn.toFixed(1) + '%';
+            
+            document.getElementById('dca-result').classList.add('show');
+        }
+
+        function calculateFIRE() {
+            const income = parseFloat(document.getElementById('annual-income').value);
+            const spending = parseFloat(document.getElementById('annual-spending').value);
+            const netWorth = parseFloat(document.getElementById('current-net-worth').value) || 0;
+            const returnRate = parseFloat(document.getElementById('fire-return').value) / 100;
+            
+            if (!income || !spending || !returnRate) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            const annualSavings = income - spending;
+            const savingsRate = (annualSavings / income) * 100;
+            const fireNumber = spending * 25; // 4% rule
+            
+            // Years to FIRE calculation
+            const monthlySavings = annualSavings / 12;
+            const monthlyRate = returnRate / 12;
+            const additionalNeeded = Math.max(0, fireNumber - netWorth);
+            
+            let yearsToFire = 0;
+            if (monthlySavings > 0 && additionalNeeded > 0) {
+                const months = Math.log(1 + (additionalNeeded * monthlyRate) / monthlySavings) / Math.log(1 + monthlyRate);
+                yearsToFire = months / 12;
+            } else if (netWorth >= fireNumber) {
+                yearsToFire = 0;
+            } else {
+                yearsToFire = Infinity;
+            }
+            
+            document.getElementById('fire-number').textContent = '$' + fireNumber.toFixed(0);
+            document.getElementById('years-to-fire').textContent = isFinite(yearsToFire) ? yearsToFire.toFixed(1) : '∞';
+            document.getElementById('savings-rate').textContent = savingsRate.toFixed(1) + '%';
+            document.getElementById('monthly-fire-savings').textContent = '$' + monthlySavings.toFixed(0);
+            
+            document.getElementById('fire-result').classList.add('show');
+        }
+    </script>
+</body>
+</html>

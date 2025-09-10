@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Library - FinGuide</title>
+    <style>
+        :root {
+            --primary-color: #dc2626;
+            --primary-dark: #991b1b;
+            --secondary-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --error-color: #dc2626;
+            --background: #ffffff;
+            --card-background: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .library-section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-description {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-bar {
+            max-width: 500px;
+            margin: 0 auto 3rem auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-count {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .article-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .article-excerpt {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .article-date {
+            margin-right: auto;
+        }
+
+        .article-read-time {
+            background: var(--secondary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .read-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .navigation {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin: 0 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .categories {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .filters {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Financial Library</h1>
+            <p>Comprehensive resources for your financial education journey</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="library-section">
+            <div class="search-bar">
+                <div class="search-icon">🔍</div>
+                <input type="text" class="search-input" placeholder="Search articles, guides, and resources..." id="searchInput">
+            </div>
+
+            <h2 class="section-title">Browse by Category</h2>
+            <div class="categories">
+                <div class="category-card" onclick="filterByCategory('basics')">
+                    <div class="category-icon">📚</div>
+                    <h3 class="category-title">Financial Basics</h3>
+                    <p class="category-count">12 articles</p>
+                </div>
+                
+                <div class="category-card" onclick="filterByCategory('budgeting')">
+                    <div class="category-icon">💰</div>
+                    <h3 class="category-title">Budgeting & Saving</h3>
+                    <p class="category-count">8 articles</p>
+                </div>
+                
+                <div class="category-card" onclick="filterByCategory('investing')">
+                    <div class="category-icon">📈</div>
+                    <h3 class="category-title">Investing</h3>
+                    <p class="category-count">15 articles</p>
+                </div>
+                
+                <div class="category-card" onclick="filterByCategory('debt')">
+                    <div class="category-icon">💳</div>
+                    <h3 class="category-title">Debt & Credit</h3>
+                    <p class="category-count">10 articles</p>
+                </div>
+                
+                <div class="category-card" onclick="filterByCategory('retirement')">
+                    <div class="category-icon">🏖️</div>
+                    <h3 class="category-title">Retirement Planning</h3>
+                    <p class="category-count">9 articles</p>
+                </div>
+                
+                <div class="category-card" onclick="filterByCategory('taxes')">
+                    <div class="category-icon">📄</div>
+                    <h3 class="category-title">Taxes</h3>
+                    <p class="category-count">6 articles</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">Featured Articles</h2>
+            
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterArticles('all')">All Articles</button>
+                <button class="filter-btn" onclick="filterArticles('beginner')">Beginner</button>
+                <button class="filter-btn" onclick="filterArticles('intermediate')">Intermediate</button>
+                <button class="filter-btn" onclick="filterArticles('advanced')">Advanced</button>
+                <button class="filter-btn" onclick="filterArticles('recent')">Most Recent</button>
+            </div>
+
+            <div class="articles-grid" id="articlesGrid">
+                <!-- Beginner Articles -->
+                <article class="article-card" data-category="basics" data-level="beginner">
+                    <div class="article-image">📚</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Personal Finance 101: Getting Started</h3>
+                        <p class="article-excerpt">Learn the fundamental concepts of personal finance including budgeting, saving, and basic investing principles...</p>
+                        <div class="article-meta">
+                            <span class="article-date">Dec 15, 2024</span>
+                            <span class="article-read-time">5 min read</span>
+                            <button class="read-btn" onclick="readArticle('finance-101')">Read More</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="article-card" data-category="budgeting" data-level="beginner">
+                    <div class="article-image">💰</div>
+                    <div class="article-content">
+                        <h3 class="article-title">The 50/30/20 Budget Rule Explained</h3>
+                        <p class="article-excerpt">Master the most popular budgeting method that helps you allocate your income effectively across needs, wants, and savings...</p>
+                        <div class="article-meta">
+                            <span class="article-date">Dec 12, 2024</span>
+                            <span class="article-read-time">4 min read</span>
+                            <button class="read-btn" onclick="readArticle('50-30-20-rule')">Read More</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="article-card" data-category="investing" data-level="intermediate">
+                    <div class="article-image">📈</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Index Fund Investing for Beginners</h3>
+                        <p class="article-excerpt">Discover why index funds are considered one of the best long-term investment strategies and how to get started...</p>
+                        <div class="article-meta">
+                            <span class="article-date">Dec 10, 2024</span>
+                            <span class="article-read-time">7 min read</span>
+                            <button class="read-btn" onclick="readArticle('index-funds')">Read More</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="article-card" data-category="debt" data-level="beginner">
+                    <div class="article-image">💳</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Understanding Credit Scores</h3>
+                        <p class="article-excerpt">Learn what affects your credit score, how to improve it, and why it matters for your financial future...</p>
+                        <div class="article-meta">
+                            <span class="article-date">Dec 8, 2024</span>
+                            <span class="article-read-time">6 min read</span>
+                            <button class="read-btn" onclick="readArticle('credit-scores')">Read More</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="article-card" data-category="retirement" data-level="intermediate">
+                    <div class="article-image">🏖️</div>
+                    <div class="article-content">
+                        <h3 class="article-title">401(k) vs. IRA: Which Is Right for You?</h3>
+                        <p class="article-excerpt">Compare the benefits and limitations of different retirement accounts to choose the best strategy for your situation...</p>
+                        <div class="article-meta">
+                            <span class="article-date">Dec 5, 2024</span>
+                            <span class="article-read-time">8 min read</span>
+                            <button class="read-btn" onclick="readArticle('401k-vs-ira')">Read More</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="article-card" data-category="basics" data-level="beginner">
+                    <div class="article-image">🛡️</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Building Your Emergency Fund</h3>
+                        <p class="article-excerpt">Step-by-step guide to building an emergency fund that protects you from financial setbacks and unexpected expenses...</p>
+                        <div class="article-meta">
+                            <span class="article-date">Dec 3, 2024</span>
+                            <span class="article-read-time">5 min read</span>
+                            <button class="read-btn" onclick="readArticle('emergency-fund')">Read More</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="article-card" data-category="investing" data-level="advanced">
+                    <div class="article-image">🎯</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Portfolio Diversification Strategies</h3>
+                        <p class="article-excerpt">Advanced techniques for building a well-diversified investment portfolio that balances risk and return...</p>
+                        <div class="article-meta">
+                            <span class="article-date">Dec 1, 2024</span>
+                            <span class="article-read-time">10 min read</span>
+                            <button class="read-btn" onclick="readArticle('diversification')">Read More</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="article-card" data-category="taxes" data-level="intermediate">
+                    <div class="article-image">📄</div>
+                    <div class="article-content">
+                        <h3 class="article-title">Tax-Advantaged Investment Accounts</h3>
+                        <p class="article-excerpt">Maximize your investments by understanding how to use tax-advantaged accounts like 401(k)s, IRAs, and HSAs...</p>
+                        <div class="article-meta">
+                            <span class="article-date">Nov 28, 2024</span>
+                            <span class="article-read-time">9 min read</span>
+                            <button class="read-btn" onclick="readArticle('tax-accounts')">Read More</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/courses/" class="nav-link">📚 Courses</a>
+            <a href="/community/" class="nav-link">👥 Community</a>
+            <a href="/chat/" class="nav-link">💬 AI Chat</a>
+            <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
+            <a href="/" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+
+    <script>
+        function filterByCategory(category) {
+            const articles = document.querySelectorAll('.article-card');
+            
+            articles.forEach(article => {
+                if (category === 'all' || article.dataset.category === category) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+
+            // Update active filter
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            // You could add a category-specific filter button here
+        }
+
+        function filterArticles(filter) {
+            const articles = document.querySelectorAll('.article-card');
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            articles.forEach(article => {
+                let show = false;
+                
+                switch(filter) {
+                    case 'all':
+                        show = true;
+                        break;
+                    case 'beginner':
+                    case 'intermediate':
+                    case 'advanced':
+                        show = article.dataset.level === filter;
+                        break;
+                    case 'recent':
+                        // Show articles from last 30 days (simplified)
+                        const date = article.querySelector('.article-date').textContent;
+                        show = date.includes('Dec 2024');
+                        break;
+                }
+                
+                article.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        function readArticle(articleId) {
+            // In a real application, this would navigate to the full article
+            alert(`Opening article: ${articleId}. This would navigate to the full article in a complete implementation.`);
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const articles = document.querySelectorAll('.article-card');
+            
+            articles.forEach(article => {
+                const title = article.querySelector('.article-title').textContent.toLowerCase();
+                const excerpt = article.querySelector('.article-excerpt').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || excerpt.includes(searchTerm)) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

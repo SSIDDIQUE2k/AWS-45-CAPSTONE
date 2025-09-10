@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Courses - FinGuide</title>
+    <style>
+        :root {
+            --primary-color: #7c3aed;
+            --primary-dark: #5b21b6;
+            --secondary-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --error-color: #dc2626;
+            --background: #ffffff;
+            --card-background: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .courses-section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-description {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .course-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .course-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .course-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .course-level {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            display: inline-block;
+        }
+
+        .course-content {
+            padding: 1.5rem;
+        }
+
+        .course-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .course-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .course-topics {
+            margin-bottom: 1.5rem;
+        }
+
+        .course-topics h4 {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .topics-list {
+            list-style: none;
+        }
+
+        .topics-list li {
+            padding: 0.25rem 0;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 1.25rem;
+        }
+
+        .topics-list li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .start-course-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .start-course-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .progress-section {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-item:last-child {
+            border-bottom: none;
+        }
+
+        .progress-info h4 {
+            margin-bottom: 0.25rem;
+        }
+
+        .progress-bar {
+            background: #e5e7eb;
+            border-radius: 10px;
+            height: 8px;
+            width: 200px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: var(--primary-color);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .navigation {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin: 0 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .course-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .progress-bar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Financial Education Courses</h1>
+            <p>Master your money with expert-designed learning paths</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="courses-section">
+            <h2 class="section-title">Available Courses</h2>
+            <p class="section-description">Choose from our comprehensive financial education curriculum designed to take you from beginner to advanced financial literacy.</p>
+            
+            <div class="courses-grid">
+                <!-- Beginner Course -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-icon">🎯</div>
+                        <h3 class="course-title">Personal Finance Fundamentals</h3>
+                        <span class="course-level">Beginner</span>
+                    </div>
+                    <div class="course-content">
+                        <p class="course-description">Master the basics of personal finance, budgeting, and money management. Perfect for those starting their financial journey.</p>
+                        
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">6 weeks</div>
+                                <div class="stat-label">Duration</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">2-3 hrs/week</div>
+                                <div class="stat-label">Time Commitment</div>
+                            </div>
+                        </div>
+
+                        <div class="course-topics">
+                            <h4>What You'll Learn:</h4>
+                            <ul class="topics-list">
+                                <li>Creating and managing budgets</li>
+                                <li>Understanding banking basics</li>
+                                <li>Building an emergency fund</li>
+                                <li>Debt management strategies</li>
+                                <li>Setting financial goals</li>
+                                <li>Tracking expenses effectively</li>
+                            </ul>
+                        </div>
+
+                        <button class="start-course-btn" onclick="startCourse('fundamentals')">Start Course</button>
+                    </div>
+                </div>
+
+                <!-- Intermediate Course -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-icon">📈</div>
+                        <h3 class="course-title">Investing & Wealth Building</h3>
+                        <span class="course-level">Intermediate</span>
+                    </div>
+                    <div class="course-content">
+                        <p class="course-description">Learn investment strategies, understanding markets, and building long-term wealth through smart financial decisions.</p>
+                        
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">8 weeks</div>
+                                <div class="stat-label">Duration</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">3-4 hrs/week</div>
+                                <div class="stat-label">Time Commitment</div>
+                            </div>
+                        </div>
+
+                        <div class="course-topics">
+                            <h4>What You'll Learn:</h4>
+                            <ul class="topics-list">
+                                <li>Stock market fundamentals</li>
+                                <li>Index funds and ETFs</li>
+                                <li>Risk assessment and management</li>
+                                <li>Retirement planning (401k, IRA)</li>
+                                <li>Portfolio diversification</li>
+                                <li>Compound interest strategies</li>
+                            </ul>
+                        </div>
+
+                        <button class="start-course-btn" onclick="startCourse('investing')">Start Course</button>
+                    </div>
+                </div>
+
+                <!-- Advanced Course -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-icon">🏆</div>
+                        <h3 class="course-title">Advanced Financial Planning</h3>
+                        <span class="course-level">Advanced</span>
+                    </div>
+                    <div class="course-content">
+                        <p class="course-description">Master advanced strategies including tax optimization, estate planning, and sophisticated investment techniques.</p>
+                        
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">10 weeks</div>
+                                <div class="stat-label">Duration</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">4-5 hrs/week</div>
+                                <div class="stat-label">Time Commitment</div>
+                            </div>
+                        </div>
+
+                        <div class="course-topics">
+                            <h4>What You'll Learn:</h4>
+                            <ul class="topics-list">
+                                <li>Tax optimization strategies</li>
+                                <li>Estate planning basics</li>
+                                <li>Real estate investing</li>
+                                <li>Advanced retirement strategies</li>
+                                <li>Business and side income</li>
+                                <li>Insurance optimization</li>
+                            </ul>
+                        </div>
+
+                        <button class="start-course-btn" onclick="startCourse('advanced')">Start Course</button>
+                    </div>
+                </div>
+
+                <!-- Credit Course -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-icon">💳</div>
+                        <h3 class="course-title">Credit & Debt Mastery</h3>
+                        <span class="course-level">Intermediate</span>
+                    </div>
+                    <div class="course-content">
+                        <p class="course-description">Understand credit scores, debt management, and strategies to optimize your creditworthiness and eliminate debt.</p>
+                        
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">4 weeks</div>
+                                <div class="stat-label">Duration</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">2-3 hrs/week</div>
+                                <div class="stat-label">Time Commitment</div>
+                            </div>
+                        </div>
+
+                        <div class="course-topics">
+                            <h4>What You'll Learn:</h4>
+                            <ul class="topics-list">
+                                <li>Credit score improvement</li>
+                                <li>Debt payoff strategies</li>
+                                <li>Credit card optimization</li>
+                                <li>Loan terms and rates</li>
+                                <li>Mortgage preparation</li>
+                                <li>Credit monitoring</li>
+                            </ul>
+                        </div>
+
+                        <button class="start-course-btn" onclick="startCourse('credit')">Start Course</button>
+                    </div>
+                </div>
+
+                <!-- Home Buying Course -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-icon">🏠</div>
+                        <h3 class="course-title">Home Buying & Real Estate</h3>
+                        <span class="course-level">Intermediate</span>
+                    </div>
+                    <div class="course-content">
+                        <p class="course-description">Navigate the home buying process with confidence, from mortgage pre-approval to closing day and beyond.</p>
+                        
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">6 weeks</div>
+                                <div class="stat-label">Duration</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">3-4 hrs/week</div>
+                                <div class="stat-label">Time Commitment</div>
+                            </div>
+                        </div>
+
+                        <div class="course-topics">
+                            <h4>What You'll Learn:</h4>
+                            <ul class="topics-list">
+                                <li>Mortgage types and terms</li>
+                                <li>Down payment strategies</li>
+                                <li>Home inspection process</li>
+                                <li>Closing procedures</li>
+                                <li>Property taxes and insurance</li>
+                                <li>Real estate market analysis</li>
+                            </ul>
+                        </div>
+
+                        <button class="start-course-btn" onclick="startCourse('homebuying')">Start Course</button>
+                    </div>
+                </div>
+
+                <!-- Entrepreneurship Course -->
+                <div class="course-card">
+                    <div class="course-header">
+                        <div class="course-icon">💼</div>
+                        <h3 class="course-title">Business & Entrepreneurship</h3>
+                        <span class="course-level">Advanced</span>
+                    </div>
+                    <div class="course-content">
+                        <p class="course-description">Learn to manage business finances, understand cash flow, and build multiple income streams through entrepreneurship.</p>
+                        
+                        <div class="course-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">8 weeks</div>
+                                <div class="stat-label">Duration</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">4-5 hrs/week</div>
+                                <div class="stat-label">Time Commitment</div>
+                            </div>
+                        </div>
+
+                        <div class="course-topics">
+                            <h4>What You'll Learn:</h4>
+                            <ul class="topics-list">
+                                <li>Business financial planning</li>
+                                <li>Cash flow management</li>
+                                <li>Business loan basics</li>
+                                <li>Side hustle strategies</li>
+                                <li>Tax considerations for business</li>
+                                <li>Scaling and growth strategies</li>
+                            </ul>
+                        </div>
+
+                        <button class="start-course-btn" onclick="startCourse('business')">Start Course</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <h2 class="section-title">Your Learning Progress</h2>
+                <div id="progress-list">
+                    <div class="progress-item">
+                        <div class="progress-info">
+                            <h4>Personal Finance Fundamentals</h4>
+                            <p style="color: var(--text-secondary); margin: 0;">Not Started</p>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/library/" class="nav-link">📚 Library</a>
+            <a href="/community/" class="nav-link">👥 Community</a>
+            <a href="/chat/" class="nav-link">💬 AI Chat</a>
+            <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
+            <a href="/" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+
+    <script>
+        function startCourse(courseId) {
+            // In a real application, this would navigate to the course content
+            alert(`Starting course: ${courseId}. This would navigate to the course content in a full implementation.`);
+            
+            // Update progress (simulation)
+            updateProgress(courseId, 10);
+        }
+
+        function updateProgress(courseId, percentage) {
+            // This is a simulation - in a real app, this would be handled by the backend
+            const progressItems = document.querySelectorAll('.progress-item');
+            
+            // Update existing progress or add new item
+            let found = false;
+            progressItems.forEach(item => {
+                const title = item.querySelector('h4').textContent;
+                if (title.toLowerCase().includes(courseId.toLowerCase())) {
+                    const progressBar = item.querySelector('.progress-fill');
+                    const progressText = item.querySelector('p');
+                    
+                    progressBar.style.width = percentage + '%';
+                    progressText.textContent = `${percentage}% Complete`;
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                // Add new progress item
+                const courseNames = {
+                    'fundamentals': 'Personal Finance Fundamentals',
+                    'investing': 'Investing & Wealth Building',
+                    'advanced': 'Advanced Financial Planning',
+                    'credit': 'Credit & Debt Mastery',
+                    'homebuying': 'Home Buying & Real Estate',
+                    'business': 'Business & Entrepreneurship'
+                };
+
+                const progressList = document.getElementById('progress-list');
+                const newItem = document.createElement('div');
+                newItem.className = 'progress-item';
+                newItem.innerHTML = `
+                    <div class="progress-info">
+                        <h4>${courseNames[courseId] || 'Unknown Course'}</h4>
+                        <p style="color: var(--text-secondary); margin: 0;">${percentage}% Complete</p>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${percentage}%"></div>
+                    </div>
+                `;
+                progressList.appendChild(newItem);
+            }
+        }
+    </script>
+</body>
+</html>

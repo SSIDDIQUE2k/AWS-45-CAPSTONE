@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Community - FinGuide</title>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --error-color: #dc2626;
+            --background: #ffffff;
+            --card-background: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .community-section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .section-description {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .community-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+        }
+
+        .discussion-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .category-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .category-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .category-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .recent-topics {
+            list-style: none;
+        }
+
+        .recent-topics li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .recent-topics li:last-child {
+            border-bottom: none;
+        }
+
+        .topic-title {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .topic-title:hover {
+            color: var(--primary-color);
+        }
+
+        .topic-replies {
+            background: var(--secondary-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .join-discussion {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .join-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 1rem 0.5rem;
+        }
+
+        .join-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .featured-discussions {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .discussion-item {
+            display: flex;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .discussion-item:last-child {
+            border-bottom: none;
+        }
+
+        .discussion-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 1rem;
+        }
+
+        .discussion-content {
+            flex: 1;
+        }
+
+        .discussion-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .discussion-meta {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .discussion-preview {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .discussion-stats {
+            display: flex;
+            gap: 1rem;
+            margin-left: 1rem;
+            align-items: center;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .navigation {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .nav-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin: 0 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .community-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .discussion-categories {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .discussion-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .discussion-stats {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Financial Community</h1>
+            <p>Connect with others on their financial journey</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="community-section">
+            <div class="community-stats">
+                <div class="stat-card">
+                    <div class="stat-number">2,847</div>
+                    <div class="stat-label">Active Members</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1,293</div>
+                    <div class="stat-label">Discussions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8,461</div>
+                    <div class="stat-label">Messages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">156</div>
+                    <div class="stat-label">Online Now</div>
+                </div>
+            </div>
+
+            <div class="join-discussion">
+                <h2>Join the Conversation</h2>
+                <p>Connect with a supportive community of people working toward financial independence.</p>
+                <button class="join-btn" onclick="joinCommunity()">🚀 Join Community</button>
+                <button class="join-btn" onclick="startDiscussion()">💬 Start Discussion</button>
+            </div>
+
+            <h2 class="section-title">Discussion Categories</h2>
+            <div class="discussion-categories">
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">💰</div>
+                        <h3 class="category-title">Budgeting & Saving</h3>
+                    </div>
+                    <p class="category-description">Share tips and strategies for managing money and building savings.</p>
+                    <ul class="recent-topics">
+                        <li>
+                            <a href="#" class="topic-title">How I saved $10k in 6 months</a>
+                            <span class="topic-replies">23 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Best budgeting apps for beginners?</a>
+                            <span class="topic-replies">45 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Emergency fund milestone!</a>
+                            <span class="topic-replies">12 replies</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">📈</div>
+                        <h3 class="category-title">Investing & Trading</h3>
+                    </div>
+                    <p class="category-description">Discuss investment strategies, market trends, and portfolio management.</p>
+                    <ul class="recent-topics">
+                        <li>
+                            <a href="#" class="topic-title">Index funds vs individual stocks</a>
+                            <span class="topic-replies">67 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Dollar-cost averaging success story</a>
+                            <span class="topic-replies">31 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">REITs for passive income?</a>
+                            <span class="topic-replies">18 replies</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">💳</div>
+                        <h3 class="category-title">Debt & Credit</h3>
+                    </div>
+                    <p class="category-description">Get support and advice for paying off debt and building credit.</p>
+                    <ul class="recent-topics">
+                        <li>
+                            <a href="#" class="topic-title">Paid off $30k in student loans!</a>
+                            <span class="topic-replies">89 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Credit score jumped 100 points</a>
+                            <span class="topic-replies">34 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Debt avalanche vs snowball</a>
+                            <span class="topic-replies">42 replies</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">🏖️</div>
+                        <h3 class="category-title">Retirement & FIRE</h3>
+                    </div>
+                    <p class="category-description">Plan for retirement and financial independence, retire early goals.</p>
+                    <ul class="recent-topics">
+                        <li>
+                            <a href="#" class="topic-title">FIRE at 35 - my journey</a>
+                            <span class="topic-replies">156 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">401k allocation strategy</a>
+                            <span class="topic-replies">72 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Early retirement healthcare costs</a>
+                            <span class="topic-replies">28 replies</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">🏠</div>
+                        <h3 class="category-title">Real Estate</h3>
+                    </div>
+                    <p class="category-description">Discuss home buying, mortgages, and real estate investing.</p>
+                    <ul class="recent-topics">
+                        <li>
+                            <a href="#" class="topic-title">First-time home buyer tips</a>
+                            <span class="topic-replies">93 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Refinancing in 2024</a>
+                            <span class="topic-replies">47 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Rental property ROI calculator</a>
+                            <span class="topic-replies">21 replies</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">🎯</div>
+                        <h3 class="category-title">Financial Goals</h3>
+                    </div>
+                    <p class="category-description">Share your financial milestones and get motivation from others.</p>
+                    <ul class="recent-topics">
+                        <li>
+                            <a href="#" class="topic-title">Net worth hit $100k!</a>
+                            <span class="topic-replies">78 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Saving for dream vacation</a>
+                            <span class="topic-replies">25 replies</span>
+                        </li>
+                        <li>
+                            <a href="#" class="topic-title">Financial independence roadmap</a>
+                            <span class="topic-replies">54 replies</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="featured-discussions">
+                <h2 class="section-title">Featured Discussions</h2>
+                
+                <div class="discussion-item">
+                    <div class="discussion-avatar">JM</div>
+                    <div class="discussion-content">
+                        <h3 class="discussion-title">My Complete Financial Transformation Story</h3>
+                        <div class="discussion-meta">Posted by Jessica_Money • 2 hours ago</div>
+                        <p class="discussion-preview">From $50k in debt to $200k net worth in 4 years. Here's exactly how I did it, including all the mistakes I made along the way...</p>
+                    </div>
+                    <div class="discussion-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">234</div>
+                            <div>replies</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.2k</div>
+                            <div>views</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="discussion-item">
+                    <div class="discussion-avatar">RF</div>
+                    <div class="discussion-content">
+                        <h3 class="discussion-title">Best Investment Apps for Beginners in 2024</h3>
+                        <div class="discussion-meta">Posted by RetireFast • 5 hours ago</div>
+                        <p class="discussion-preview">Comprehensive comparison of investment platforms including fees, features, and ease of use. Perfect for those just starting out...</p>
+                    </div>
+                    <div class="discussion-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">89</div>
+                            <div>replies</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">856</div>
+                            <div>views</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="discussion-item">
+                    <div class="discussion-avatar">BG</div>
+                    <div class="discussion-content">
+                        <h3 class="discussion-title">Emergency Fund: How Much Is Enough?</h3>
+                        <div class="discussion-meta">Posted by BudgetGuru • 1 day ago</div>
+                        <p class="discussion-preview">The traditional advice is 3-6 months, but is that right for everyone? Let's discuss based on different life situations...</p>
+                    </div>
+                    <div class="discussion-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">156</div>
+                            <div>replies</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">2.1k</div>
+                            <div>views</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="discussion-item">
+                    <div class="discussion-avatar">SP</div>
+                    <div class="discussion-content">
+                        <h3 class="discussion-title">Side Hustle Ideas That Actually Work</h3>
+                        <div class="discussion-meta">Posted by SidePro • 2 days ago</div>
+                        <p class="discussion-preview">Real experiences from community members about side hustles that generated significant extra income. No get-rich-quick schemes here...</p>
+                    </div>
+                    <div class="discussion-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">203</div>
+                            <div>replies</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3.4k</div>
+                            <div>views</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/courses/" class="nav-link">📚 Courses</a>
+            <a href="/library/" class="nav-link">📖 Library</a>
+            <a href="/chat/" class="nav-link">💬 AI Chat</a>
+            <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
+            <a href="/" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+
+    <script>
+        function joinCommunity() {
+            alert('Join Community feature would redirect to registration/login in a full implementation.');
+        }
+
+        function startDiscussion() {
+            alert('Start Discussion feature would open a new topic form in a full implementation.');
+        }
+
+        // Add click handlers for discussion topics
+        document.querySelectorAll('.topic-title').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(`Opening discussion: "${this.textContent}". This would navigate to the full discussion in a complete implementation.`);
+            });
+        });
+
+        // Add click handlers for featured discussions
+        document.querySelectorAll('.discussion-title').forEach(title => {
+            title.addEventListener('click', function() {
+                alert(`Opening discussion: "${this.textContent}". This would navigate to the full discussion in a complete implementation.`);
+            });
+        });
+    </script>
+</body>
+</html>

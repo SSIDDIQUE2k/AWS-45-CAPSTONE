@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Calculators - FinGuide</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --error-color: #dc2626;
+            --background: #ffffff;
+            --card-background: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .calculators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+
+        .calculator-card {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .calculator-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .calculator-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .calculate-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .calculate-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        .navigation {
+            text-align: center;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .nav-link {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            margin: 0 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-dark);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .calculators-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 2rem 0;
+            }
+
+            .calculator-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Financial Calculators</h1>
+            <p>Powerful tools to help you make informed financial decisions</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="calculators-grid">
+            <!-- Loan Calculator -->
+            <div class="calculator-card">
+                <h2 class="calculator-title">💰 Loan Payment Calculator</h2>
+                <p class="calculator-description">Calculate monthly payments for loans, mortgages, and auto financing.</p>
+                
+                <div class="form-group">
+                    <label class="form-label" for="loan-amount">Loan Amount ($)</label>
+                    <input type="number" id="loan-amount" class="form-input" placeholder="250000">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="loan-rate">Annual Interest Rate (%)</label>
+                    <input type="number" id="loan-rate" class="form-input" placeholder="4.5" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="loan-term">Loan Term (years)</label>
+                    <input type="number" id="loan-term" class="form-input" placeholder="30">
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateLoan()">Calculate Payment</button>
+                
+                <div id="loan-result" class="result">
+                    <div class="result-title">Monthly Payment:</div>
+                    <div class="result-value" id="loan-payment">$0</div>
+                </div>
+            </div>
+
+            <!-- Compound Interest Calculator -->
+            <div class="calculator-card">
+                <h2 class="calculator-title">📈 Compound Interest Calculator</h2>
+                <p class="calculator-description">See how your savings grow with compound interest over time.</p>
+                
+                <div class="form-group">
+                    <label class="form-label" for="principal">Initial Investment ($)</label>
+                    <input type="number" id="principal" class="form-input" placeholder="10000">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="monthly-contribution">Monthly Contribution ($)</label>
+                    <input type="number" id="monthly-contribution" class="form-input" placeholder="500">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="interest-rate">Annual Interest Rate (%)</label>
+                    <input type="number" id="interest-rate" class="form-input" placeholder="7" step="0.01">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="years">Investment Period (years)</label>
+                    <input type="number" id="years" class="form-input" placeholder="20">
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateCompound()">Calculate Growth</button>
+                
+                <div id="compound-result" class="result">
+                    <div class="result-title">Final Amount:</div>
+                    <div class="result-value" id="compound-amount">$0</div>
+                    <div style="margin-top: 0.5rem; color: var(--text-secondary);">
+                        Total Contributed: <span id="total-contributed">$0</span><br>
+                        Interest Earned: <span id="interest-earned">$0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DTI Calculator -->
+            <div class="calculator-card">
+                <h2 class="calculator-title">📊 Debt-to-Income Calculator</h2>
+                <p class="calculator-description">Calculate your debt-to-income ratio to assess borrowing capacity.</p>
+                
+                <div class="form-group">
+                    <label class="form-label" for="monthly-income">Gross Monthly Income ($)</label>
+                    <input type="number" id="monthly-income" class="form-input" placeholder="5000">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="monthly-debt">Total Monthly Debt Payments ($)</label>
+                    <input type="number" id="monthly-debt" class="form-input" placeholder="1500">
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateDTI()">Calculate DTI</button>
+                
+                <div id="dti-result" class="result">
+                    <div class="result-title">Debt-to-Income Ratio:</div>
+                    <div class="result-value" id="dti-percentage">0%</div>
+                    <div style="margin-top: 0.5rem; color: var(--text-secondary);">
+                        <span id="dti-assessment">Assessment will appear here</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Fund Calculator -->
+            <div class="calculator-card">
+                <h2 class="calculator-title">🛡️ Emergency Fund Calculator</h2>
+                <p class="calculator-description">Determine how much you should save for emergencies.</p>
+                
+                <div class="form-group">
+                    <label class="form-label" for="monthly-expenses">Monthly Expenses ($)</label>
+                    <input type="number" id="monthly-expenses" class="form-input" placeholder="3500">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="months-coverage">Months of Coverage</label>
+                    <select id="months-coverage" class="form-input">
+                        <option value="3">3 months (minimum)</option>
+                        <option value="6" selected>6 months (recommended)</option>
+                        <option value="9">9 months (conservative)</option>
+                        <option value="12">12 months (very safe)</option>
+                    </select>
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateEmergencyFund()">Calculate Fund</button>
+                
+                <div id="emergency-result" class="result">
+                    <div class="result-title">Emergency Fund Target:</div>
+                    <div class="result-value" id="emergency-amount">$0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="/chat/" class="nav-link">💬 AI Financial Chat</a>
+            <a href="/dashboard/" class="nav-link">📊 Dashboard</a>
+            <a href="/" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+
+    <script>
+        function calculateLoan() {
+            const amount = parseFloat(document.getElementById('loan-amount').value);
+            const rate = parseFloat(document.getElementById('loan-rate').value) / 100 / 12;
+            const term = parseFloat(document.getElementById('loan-term').value) * 12;
+            
+            if (!amount || !rate || !term) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            const payment = (amount * rate * Math.pow(1 + rate, term)) / (Math.pow(1 + rate, term) - 1);
+            
+            document.getElementById('loan-payment').textContent = '$' + payment.toFixed(2);
+            document.getElementById('loan-result').classList.add('show');
+        }
+
+        function calculateCompound() {
+            const principal = parseFloat(document.getElementById('principal').value) || 0;
+            const monthly = parseFloat(document.getElementById('monthly-contribution').value) || 0;
+            const rate = parseFloat(document.getElementById('interest-rate').value) / 100;
+            const years = parseFloat(document.getElementById('years').value);
+            
+            if (!rate || !years) {
+                alert('Please fill in the interest rate and years');
+                return;
+            }
+            
+            // Compound interest with monthly contributions
+            const monthlyRate = rate / 12;
+            const months = years * 12;
+            
+            // Future value of initial principal
+            const futureValuePrincipal = principal * Math.pow(1 + monthlyRate, months);
+            
+            // Future value of monthly contributions (ordinary annuity)
+            const futureValueContributions = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+            
+            const totalAmount = futureValuePrincipal + futureValueContributions;
+            const totalContributed = principal + (monthly * months);
+            const interestEarned = totalAmount - totalContributed;
+            
+            document.getElementById('compound-amount').textContent = '$' + totalAmount.toFixed(2);
+            document.getElementById('total-contributed').textContent = '$' + totalContributed.toFixed(2);
+            document.getElementById('interest-earned').textContent = '$' + interestEarned.toFixed(2);
+            document.getElementById('compound-result').classList.add('show');
+        }
+
+        function calculateDTI() {
+            const income = parseFloat(document.getElementById('monthly-income').value);
+            const debt = parseFloat(document.getElementById('monthly-debt').value);
+            
+            if (!income || !debt) {
+                alert('Please fill in both fields');
+                return;
+            }
+            
+            const dti = (debt / income) * 100;
+            let assessment = '';
+            
+            if (dti < 20) {
+                assessment = 'Excellent - Great borrowing power';
+            } else if (dti < 36) {
+                assessment = 'Good - Most loans approved';
+            } else if (dti < 43) {
+                assessment = 'Acceptable - Some loan restrictions';
+            } else {
+                assessment = 'Poor - Loan approval difficult';
+            }
+            
+            document.getElementById('dti-percentage').textContent = dti.toFixed(1) + '%';
+            document.getElementById('dti-assessment').textContent = assessment;
+            document.getElementById('dti-result').classList.add('show');
+        }
+
+        function calculateEmergencyFund() {
+            const expenses = parseFloat(document.getElementById('monthly-expenses').value);
+            const months = parseFloat(document.getElementById('months-coverage').value);
+            
+            if (!expenses) {
+                alert('Please enter your monthly expenses');
+                return;
+            }
+            
+            const target = expenses * months;
+            
+            document.getElementById('emergency-amount').textContent = '$' + target.toFixed(2);
+            document.getElementById('emergency-result').classList.add('show');
+        }
+    </script>
+</body>
+</html>

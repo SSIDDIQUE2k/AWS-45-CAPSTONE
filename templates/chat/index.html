@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FinGuide - AI Financial Assistant</title>
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Light theme */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-accent: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border-light: #e2e8f0;
+      --border-medium: #cbd5e1;
+      --accent-primary: #3b82f6;
+      --accent-secondary: #6366f1;
+      --accent-gradient: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-accent: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-light: #334155;
+      --border-medium: #475569;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      min-height: 100vh;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border-light);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(20px);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--accent-gradient);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .theme-toggle {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .theme-toggle:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Main Content */
+    .main-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      min-height: calc(100vh - 80px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .chat-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .chat-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Chat Container */
+    .chat-container {
+      background: var(--bg-primary);
+      border-radius: 20px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-height: 70vh;
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-secondary);
+    }
+
+    .quick-actions-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .quick-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .quick-btn {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .quick-btn:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .quick-btn-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--bg-accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--accent-primary);
+      transition: all 0.2s ease;
+    }
+
+    .quick-btn:hover .quick-btn-icon {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .quick-btn-text {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .quick-btn:hover .quick-btn-text {
+      color: white;
+    }
+
+    /* Messages Area */
+    .messages-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      scroll-behavior: smooth;
+    }
+
+    .messages-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .messages-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .messages-container::-webkit-scrollbar-thumb {
+      background: var(--border-medium);
+      border-radius: 3px;
+    }
+
+    .messages-container::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-primary);
+    }
+
+    .message {
+      display: flex;
+      gap: 0.75rem;
+      animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .message-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.125rem;
+      flex-shrink: 0;
+    }
+
+    .message.assistant .message-avatar {
+      background: var(--accent-gradient);
+      color: white;
+    }
+
+    .message.user .message-avatar {
+      background: var(--bg-accent);
+      color: var(--text-secondary);
+    }
+
+    .message-content {
+      max-width: 70%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      padding: 1rem 1.25rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      position: relative;
+      word-wrap: break-word;
+    }
+
+    .message.user .message-content {
+      background: var(--accent-gradient);
+      color: white;
+      border: none;
+    }
+
+    .message-actions {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+
+    .message-content:hover .message-actions {
+      opacity: 1;
+    }
+
+    .copy-btn {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+
+    /* Typing Indicator */
+    .typing-indicator {
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--text-secondary);
+      border-radius: 50%;
+      animation: typing 1.4s infinite;
+    }
+
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    /* Input Area */
+    .input-area {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border-light);
+      background: var(--bg-primary);
+    }
+
+    .input-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .input-form {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-end;
+    }
+
+    .input-wrapper {
+      flex: 1;
+      position: relative;
+    }
+
+    .message-input {
+      width: 100%;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-size: 1rem;
+      color: var(--text-primary);
+      resize: none;
+      outline: none;
+      transition: all 0.2s ease;
+      min-height: 50px;
+      max-height: 120px;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .message-input:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: var(--bg-primary);
+    }
+
+    .message-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .send-btn {
+      background: var(--accent-gradient);
+      border: none;
+      border-radius: 12px;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.125rem;
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .clear-btn:hover {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
+    }
+
+    /* Connection Status */
+    .connection-status {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .connection-status.connected {
+      background: var(--success);
+      color: white;
+    }
+
+    .connection-status.disconnected {
+      background: var(--danger);
+      color: white;
+    }
+
+    .connection-status.connecting {
+      background: var(--warning);
+      color: white;
+    }
+
+    /* Citations and Disclaimer */
+    .info-section {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .citations {
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      color: var(--accent-primary);
+    }
+
+    .disclaimer {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      color: var(--warning);
+    }
+
+    /* Markdown Styles */
+    .message-content h1, .message-content h2, .message-content h3 {
+      margin: 1rem 0 0.5rem 0;
+      font-weight: 600;
+    }
+
+    .message-content h1 { font-size: 1.5rem; }
+    .message-content h2 { font-size: 1.25rem; }
+    .message-content h3 { font-size: 1.125rem; }
+
+    .message-content ul, .message-content ol {
+      margin: 0.5rem 0;
+      padding-left: 1.5rem;
+    }
+
+    .message-content li {
+      margin: 0.25rem 0;
+    }
+
+    .message-content strong {
+      font-weight: 600;
+    }
+
+    .message-content p {
+      margin: 0.5rem 0;
+    }
+
+    .message-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .message-content td, .message-content th {
+      border: 1px solid var(--border-light);
+      padding: 0.5rem;
+      text-align: left;
+    }
+
+    .message-content th {
+      background: var(--bg-accent);
+      font-weight: 600;
+    }
+
+    /* Animations */
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 1rem;
+      }
+
+      .nav-container {
+        padding: 0 1rem;
+      }
+
+      .chat-title {
+        font-size: 2rem;
+      }
+
+      .quick-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .message-content {
+        max-width: 85%;
+      }
+
+      .nav-actions {
+        gap: 0.5rem;
+      }
+
+      .theme-toggle span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .input-form {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .send-btn {
+        width: 100%;
+        height: 45px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Connection Status -->
+  <div class="connection-status connecting" id="connectionStatus">
+    <i class="fas fa-circle"></i>
+    <span>Connecting...</span>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <span>FinGuide</span>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <i class="fas fa-moon" id="themeIcon"></i>
+          <span id="themeText">Dark</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-container">
+    <!-- Header -->
+    <header class="chat-header">
+      <h1 class="chat-title">AI Financial Assistant</h1>
+      <p class="chat-subtitle">Get expert financial advice and education powered by artificial intelligence</p>
+    </header>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="quick-actions-title">
+          <i class="fas fa-bolt"></i>
+          Popular Questions
+        </div>
+        <div class="quick-buttons">
+          <button class="quick-btn" onclick="askQuestion('What is the difference between APR and APY?')">
+            <div class="quick-btn-icon">
+              <i class="fas fa-percentage"></i>
+            </div>
+            <div class="quick-btn-text">APR vs APY</div>
+          </button>
+          <button class="quick-btn" onclick="askQuestion('How do I create a budget?')">
+            <div class="quick-btn-icon">
+              <i class="fas fa-calculator"></i>
+            </div>
+            <div class="quick-btn-text">Budget Planning</div>
+          </button>
+          <button class="quick-btn" onclick="askQuestion('What is debt-to-income ratio?')">
+            <div class="quick-btn-icon">
+              <i class="fas fa-balance-scale"></i>
+            </div>
+            <div class="quick-btn-text">Debt Management</div>
+          </button>
+          <button class="quick-btn" onclick="askQuestion('How does compound interest work?')">
+            <div class="quick-btn-icon">
+              <i class="fas fa-chart-area"></i>
+            </div>
+            <div class="quick-btn-text">Investment Basics</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div class="messages-container" id="messagesContainer">
+        <div class="message assistant">
+          <div class="message-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-actions">
+              <button class="copy-btn" onclick="copyMessage(this)" title="Copy message">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+            Welcome! I'm your AI financial assistant. I can help you understand personal finance, investing, budgeting, loans, and more. What would you like to learn about today?
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div class="typing-indicator" id="typingIndicator">
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+        <span>AI is thinking...</span>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <div class="input-controls">
+          <button class="clear-btn" onclick="clearChat()" title="Clear conversation">
+            <i class="fas fa-trash"></i>
+            <span>Clear Chat</span>
+          </button>
+        </div>
+        <form class="input-form" onsubmit="sendMessage(event)">
+          <div class="input-wrapper">
+            <textarea 
+              id="messageInput" 
+              class="message-input"
+              placeholder="Ask me about personal finance, investing, budgeting, or any financial topic..."
+              rows="1"
+            ></textarea>
+          </div>
+          <button type="submit" class="send-btn" id="sendBtn">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Citations -->
+    <div id="citations" class="info-section citations"></div>
+    
+    <!-- Disclaimer -->
+    <div id="disclaimer" class="info-section disclaimer"></div>
+  </main>
+
+  <script>
+    let ws;
+    let isConnected = false;
+    let currentMessageElement = null;
+
+    // WebSocket Management
+    function updateConnectionStatus(status) {
+      const statusEl = document.getElementById('connectionStatus');
+      const statusText = statusEl.querySelector('span');
+      
+      statusEl.className = `connection-status ${status}`;
+      
+      switch(status) {
+        case 'connected':
+          statusText.textContent = 'Connected';
+          isConnected = true;
+          break;
+        case 'disconnected':
+          statusText.textContent = 'Disconnected';
+          isConnected = false;
+          break;
+        case 'connecting':
+          statusText.textContent = 'Connecting...';
+          isConnected = false;
+          break;
+      }
+    }
+
+    function connectWS() {
+      updateConnectionStatus('connecting');
+      ws = new WebSocket((location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws/chat');
+      
+      ws.onopen = () => {
+        updateConnectionStatus('connected');
+      };
+      
+      ws.onclose = () => {
+        updateConnectionStatus('disconnected');
+        setTimeout(connectWS, 3000);
+      };
+      
+      ws.onerror = () => {
+        updateConnectionStatus('disconnected');
+      };
+      
+      ws.onmessage = (e) => {
+        const msg = JSON.parse(e.data);
+        
+        if (msg.type === 'chunk') {
+          if (!currentMessageElement) {
+            createAssistantMessage();
+          }
+          if (!currentMessageElement.textContent) {
+            currentMessageElement.textContent = '';
+          }
+          currentMessageElement.textContent += msg.content;
+          currentMessageElement.innerHTML = formatMarkdown(currentMessageElement.textContent);
+          scrollToBottom();
+        } else if (msg.type === 'done') {
+          hideTypingIndicator();
+          currentMessageElement = null;
+          
+          if (msg.citations && msg.citations.length > 0) {
+            showCitations(msg.citations);
+          }
+          
+          if (msg.disclaimer) {
+            showDisclaimer(msg.disclaimer);
+          }
+          
+          enableInput();
+        }
+      };
+    }
+
+    // Message Management
+    function createUserMessage(text) {
+      const container = document.getElementById('messagesContainer');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message user';
+      messageDiv.innerHTML = `
+        <div class="message-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="message-content">
+          ${escapeHtml(text)}
+        </div>
+      `;
+      container.appendChild(messageDiv);
+      scrollToBottom();
+    }
+
+    function createAssistantMessage() {
+      const container = document.getElementById('messagesContainer');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = 'message assistant';
+      messageDiv.innerHTML = `
+        <div class="message-avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="message-content">
+          <div class="message-actions">
+            <button class="copy-btn" onclick="copyMessage(this)" title="Copy message">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+        </div>
+      `;
+      container.appendChild(messageDiv);
+      currentMessageElement = messageDiv.querySelector('.message-content');
+      scrollToBottom();
+    }
+
+    function showTypingIndicator() {
+      document.getElementById('typingIndicator').style.display = 'flex';
+      scrollToBottom();
+    }
+
+    function hideTypingIndicator() {
+      document.getElementById('typingIndicator').style.display = 'none';
+    }
+
+    function scrollToBottom() {
+      const container = document.getElementById('messagesContainer');
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // Utility Functions
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function formatMarkdown(text) {
+      let html = escapeHtml(text);
+      
+      // Headers
+      html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+      
+      // Bold text
+      html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      
+      // Lists
+      html = html.replace(/^[•\-\*] (.*$)/gm, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>(?:\n<li>.*<\/li>)*)/g, '<ul>$1</ul>');
+      html = html.replace(/\n<\/li>\n<li>/g, '</li>\n<li>');
+      
+      // Numbered lists
+      html = html.replace(/^\d+\. (.*$)/gm, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>(?:\n<li>.*<\/li>)*)/g, function(match) {
+        if (!match.includes('<ul>')) {
+          return '<ol>' + match + '</ol>';
+        }
+        return match;
+      });
+      
+      // Tables
+      html = html.replace(/^\|(.+)\|$/gm, function(match, content) {
+        const cells = content.split('|').map(cell => `<td>${cell.trim()}</td>`).join('');
+        return `<tr>${cells}</tr>`;
+      });
+      html = html.replace(/(<tr>.*<\/tr>(?:\n<tr>.*<\/tr>)*)/g, '<table>$1</table>');
+      
+      // Line breaks
+      html = html.replace(/\n\n/g, '</p><p>');
+      html = html.replace(/\n/g, '<br>');
+      
+      if (!html.startsWith('<h') && !html.startsWith('<ul') && !html.startsWith('<ol') && !html.startsWith('<table')) {
+        html = '<p>' + html + '</p>';
+      }
+      
+      html = html.replace(/<p><\/p>/g, '');
+      html = html.replace(/<p><br><\/p>/g, '');
+      
+      return html;
+    }
+
+    // User Actions
+    function copyMessage(button) {
+      const messageContent = button.closest('.message-content');
+      const text = messageContent.textContent.replace('Copy message', '').trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const icon = button.querySelector('i');
+        const originalClass = icon.className;
+        icon.className = 'fas fa-check';
+        button.style.background = 'var(--success)';
+        button.style.color = 'white';
+        setTimeout(() => {
+          icon.className = originalClass;
+          button.style.background = '';
+          button.style.color = '';
+        }, 2000);
+      });
+    }
+
+    function clearChat() {
+      if (confirm('Are you sure you want to clear the conversation?')) {
+        const container = document.getElementById('messagesContainer');
+        container.innerHTML = `
+          <div class="message assistant">
+            <div class="message-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="message-content">
+              <div class="message-actions">
+                <button class="copy-btn" onclick="copyMessage(this)" title="Copy message">
+                  <i class="fas fa-copy"></i>
+                </button>
+              </div>
+              Welcome! I'm your AI financial assistant. I can help you understand personal finance, investing, budgeting, loans, and more. What would you like to learn about today?
+            </div>
+          </div>
+        `;
+        document.getElementById('citations').style.display = 'none';
+        document.getElementById('disclaimer').style.display = 'none';
+        enableInput();
+      }
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      const themeIcon = document.getElementById('themeIcon');
+      const themeText = document.getElementById('themeText');
+      
+      if (newTheme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+        themeText.textContent = 'Light';
+      } else {
+        themeIcon.className = 'fas fa-moon';
+        themeText.textContent = 'Dark';
+      }
+    }
+
+    function askQuestion(question) {
+      document.getElementById('messageInput').value = question;
+      document.getElementById('messageInput').focus();
+    }
+
+    function autoResize(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+    }
+
+    function disableInput() {
+      document.getElementById('messageInput').disabled = true;
+      document.getElementById('sendBtn').disabled = true;
+    }
+
+    function enableInput() {
+      document.getElementById('messageInput').disabled = false;
+      document.getElementById('sendBtn').disabled = false;
+      document.getElementById('messageInput').focus();
+    }
+
+    function sendMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+      
+      if (!message || !isConnected) return;
+      
+      document.getElementById('citations').style.display = 'none';
+      document.getElementById('disclaimer').style.display = 'none';
+      
+      createUserMessage(message);
+      showTypingIndicator();
+      disableInput();
+      
+      ws.send(JSON.stringify({message: message}));
+      input.value = '';
+      input.style.height = 'auto';
+    }
+
+    function showCitations(citations) {
+      const citationsEl = document.getElementById('citations');
+      citationsEl.innerHTML = `
+        <strong><i class="fas fa-book"></i> Sources:</strong><br>
+        ${citations.map(c => `• ${c}`).join('<br>')}
+      `;
+      citationsEl.style.display = 'block';
+    }
+
+    function showDisclaimer(disclaimer) {
+      const disclaimerEl = document.getElementById('disclaimer');
+      disclaimerEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${disclaimer}`;
+      disclaimerEl.style.display = 'block';
+    }
+
+    // Initialization
+    window.addEventListener('load', () => {
+      // Load saved theme
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      
+      const themeIcon = document.getElementById('themeIcon');
+      const themeText = document.getElementById('themeText');
+      
+      if (savedTheme === 'dark') {
+        themeIcon.className = 'fas fa-sun';
+        themeText.textContent = 'Light';
+      }
+      
+      connectWS();
+      document.getElementById('messageInput').focus();
+    });
+
+    // Event Listeners
+    document.getElementById('messageInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage(e);
+      }
+    });
+
+    document.getElementById('messageInput').addEventListener('input', (e) => {
+      autoResize(e.target);
+    });
+  </script>
+</body>
+</html>

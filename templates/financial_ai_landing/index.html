@@ -1,0 +1,278 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinanceAI — Financial AI Assistant</title>
+    <meta name="description" content="AI-powered financial assistant for budgeting, investments, and insights." />
+    <link rel="stylesheet" href="{% static 'landing/landing.css' %}" />
+    <style>.text-pretty{text-wrap:pretty}.text-balance{text-wrap:balance}</style>
+  </head>
+  <body class="min-h-screen bg-background text-foreground">
+    <a href="#main" class="skip-link">Skip to main content</a>
+    <header class="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <div class="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+              <svg class="icon h-5 w-5 text-primary-foreground" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="10" width="4" height="10" fill="currentColor"/>
+                <rect x="10" y="6" width="4" height="14" fill="currentColor"/>
+                <rect x="17" y="13" width="4" height="7" fill="currentColor"/>
+              </svg>
+            </div>
+            <span class="text-xl font-bold">FinanceAI</span>
+          </div>
+          <nav class="hidden md:flex items-center space-x-8">
+            <a href="#features" class="nav-link transition-colors">Features</a>
+            <a href="#testimonials" class="nav-link transition-colors">Reviews</a>
+            <a href="#pricing" class="nav-link transition-colors">Pricing</a>
+            <a href="#" class="px-3 py-1.5 rounded border border-border hover:border-foreground transition">Sign In</a>
+            <a href="/chat/" class="px-3 py-1.5 rounded bg-primary text-primary-foreground">Get Started</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- Hero -->
+      <section class="py-20 lg:py-32">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-4xl mx-auto">
+            <span class="inline-flex items-center px-2.5 py-1 rounded bg-muted/30 text-sm mb-6">
+              <svg class="icon h-3 w-3 mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" fill="currentColor"/></svg>
+              AI-Powered Financial Assistant
+            </span>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-balance mb-6">
+              Your Trusted <span class="text-primary">Financial AI</span> Assistant
+            </h1>
+            <p class="text-xl text-muted-foreground text-pretty mb-8 max-w-2xl mx-auto">
+              Get personalized financial advice, automate budgeting, and make smarter investment decisions with advanced AI.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/chat/" class="btn btn-primary text-lg inline-flex">
+                Start Free Trial
+                <svg class="icon ml-2 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+              </a>
+              <a href="/tools/" class="btn btn-outline text-lg inline-flex bg-transparent">
+                Watch Demo
+              </a>
+            </div>
+            <p class="text-sm text-muted-foreground mt-4">No credit card required • 14-day free trial • Cancel anytime</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features -->
+      <section id="features" class="py-20 bg-muted/30">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold leading-tight text-balance mb-4">Everything You Need for Financial Success</h2>
+            <p class="text-xl text-muted-foreground text-pretty max-w-2xl mx-auto">
+              AI analyzes your financial data to provide personalized insights and actionable recommendations.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="card hover:shadow-lg transition-shadow">
+              <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <svg class="icon h-6 w-6 text-primary" viewBox="0 0 24 24"><rect x="3" y="10" width="4" height="10" fill="currentColor"/><rect x="10" y="6" width="4" height="14" fill="currentColor"/><rect x="17" y="13" width="4" height="7" fill="currentColor"/></svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Smart Budgeting</h3>
+              <p class="text-muted-foreground">AI-powered budget analysis that adapts to your spending patterns and suggests optimizations.</p>
+            </div>
+            <!-- Card 2 -->
+            <div class="card hover:shadow-lg transition-shadow">
+              <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <svg class="icon h-6 w-6 text-primary" viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 9-7 9s-7-4-7-9V7l7-4z"/></svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Risk Assessment</h3>
+              <p class="text-muted-foreground">Comprehensive risk analysis for investments and decisions with real-time market data.</p>
+            </div>
+            <!-- Card 3 -->
+            <div class="card hover:shadow-lg transition-shadow">
+              <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <svg class="icon h-6 w-6 text-primary" viewBox="0 0 24 24"><path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z"/></svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Automated Insights</h3>
+              <p class="text-muted-foreground">Instant notifications about spending anomalies, opportunities, and progress toward goals.</p>
+            </div>
+            <!-- Card 4 -->
+            <div class="card hover:shadow-lg transition-shadow">
+              <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <svg class="icon h-6 w-6 text-primary" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M4 19c0-3 3-5 7-5s7 2 7 5"/></svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Family Planning</h3>
+              <p class="text-muted-foreground">Collaborative planning tools for families with shared goals and individual tracking.</p>
+            </div>
+            <!-- Card 5 -->
+            <div class="card hover:shadow-lg transition-shadow">
+              <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <svg class="icon h-6 w-6 text-primary" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Goal Tracking</h3>
+              <p class="text-muted-foreground">Set and monitor financial goals with AI-powered progress tracking.</p>
+            </div>
+            <!-- Card 6 -->
+            <div class="card hover:shadow-lg transition-shadow">
+              <div class="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <svg class="icon h-6 w-6 text-primary" viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+              </div>
+              <h3 class="text-xl font-semibold mb-2">Expert Advice</h3>
+              <p class="text-muted-foreground">Access to financial advisors and curated educational content tailored to your needs.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section id="testimonials" class="py-20">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold text-balance mb-4">Trusted by Thousands of Users</h2>
+            <p class="text-xl text-muted-foreground text-pretty max-w-2xl mx-auto">See how our AI helps people achieve their financial goals.</p>
+          </div>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Testimonial cards -->
+            <div class="p-6 rounded-lg border border-border">
+              <div class="flex items-center mb-4">
+                <svg class="icon h-4 w-4 fill-accent text-accent" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+              </div>
+              <p class="text-muted-foreground mb-4">"FinanceAI helped me save $2,000 in 3 months by identifying unnecessary subscriptions and optimizing spending patterns."</p>
+              <div class="flex items-center">
+                <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                  <span class="text-sm font-medium text-primary-foreground bg-primary rounded-full w-full h-full flex items-center justify-center">SJ</span>
+                </div>
+                <div>
+                  <p class="font-medium">Sarah Johnson</p>
+                  <p class="text-sm text-muted-foreground">Marketing Manager</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 rounded-lg border border-border">
+              <div class="flex items-center mb-4">
+                <svg class="icon h-4 w-4 fill-accent text-accent" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+              </div>
+              <p class="text-muted-foreground mb-4">"The investment recommendations are spot-on. My portfolio has grown 15% since using the AI advisor feature."</p>
+              <div class="flex items-center">
+                <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                  <span class="text-sm font-medium text-primary-foreground bg-primary rounded-full w-full h-full flex items-center justify-center">MC</span>
+                </div>
+                <div>
+                  <p class="font-medium">Michael Chen</p>
+                  <p class="text-sm text-muted-foreground">Software Engineer</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 rounded-lg border border-border">
+              <div class="flex items-center mb-4">
+                <svg class="icon h-4 w-4 fill-accent text-accent" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+                <svg class="icon h-4 w-4 fill-accent text-accent ml-1" viewBox="0 0 24 24"><polygon fill="currentColor" points="12 2 15 9 22 9 17 14 19 21 12 17 5 21 7 14 2 9 9 9"/></svg>
+              </div>
+              <p class="text-muted-foreground mb-4">"Finally, a financial app that understands my family's needs. The collaborative features are game-changing."</p>
+              <div class="flex items-center">
+                <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
+                  <span class="text-sm font-medium text-primary-foreground bg-primary rounded-full w-full h-full flex items-center justify-center">ER</span>
+                </div>
+                <div>
+                  <p class="font-medium">Emily Rodriguez</p>
+                  <p class="text-sm text-muted-foreground">Teacher</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="py-20 bg-primary text-primary-foreground">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-3xl mx-auto">
+            <h2 class="text-3xl sm:text-4xl font-bold leading-tight text-balance mb-6">Ready to Transform Your Financial Future?</h2>
+            <p class="text-xl opacity-90 text-pretty mb-8">Join thousands who improved their financial health with our AI-powered platform.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="/chat/" class="btn btn-white text-lg inline-flex items-center justify-center">
+                Start Your Free Trial
+                <svg class="icon ml-2 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>
+              </a>
+              <a href="#" class="btn btn-white-outline text-lg inline-flex items-center justify-center bg-transparent">
+                Schedule Demo
+              </a>
+            </div>
+            <p class="text-sm opacity-75 mt-4">14-day free trial • No setup fees • Cancel anytime</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="py-12 border-t border-border">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-8">
+          <div>
+            <div class="flex items-center space-x-2 mb-4">
+              <div class="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+                <svg class="icon h-5 w-5 text-primary-foreground" viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="10" width="4" height="10" fill="currentColor"/>
+                  <rect x="10" y="6" width="4" height="14" fill="currentColor"/>
+                  <rect x="17" y="13" width="4" height="7" fill="currentColor"/>
+                </svg>
+              </div>
+              <span class="text-xl font-bold">FinanceAI</span>
+            </div>
+            <p class="text-muted-foreground text-sm">Empowering financial decisions with artificial intelligence.</p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold mb-4">Product</h3>
+            <ul class="space-y-2 text-sm text-muted-foreground">
+              <li><a href="#" class="hover:text-foreground transition-colors">Features</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">Pricing</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">API</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">Integrations</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold mb-4">Company</h3>
+            <ul class="space-y-2 text-sm text-muted-foreground">
+              <li><a href="#" class="hover:text-foreground transition-colors">About</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">Blog</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">Careers</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">Contact</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold mb-4">Support</h3>
+            <ul class="space-y-2 text-sm text-muted-foreground">
+              <li><a href="#" class="hover:text-foreground transition-colors">Help Center</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">Privacy Policy</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">Terms of Service</a></li>
+              <li><a href="#" class="hover:text-foreground transition-colors">Security</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
+          <p>&copy; 2024 FinanceAI. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- No external scripts required; icons are inline SVGs and styles are local. -->
+  </body>
+  </html>
